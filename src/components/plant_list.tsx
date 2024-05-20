@@ -1,8 +1,8 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, Image, View } from 'react-native';
 
-const PlantList = ({ plants, navigation }) => {
-  const renderItem = ({ item }) => (
+const PlantList: React.FC<PlantListProps> = ({ plants, navigation }) => {
+  const renderItem = ({ item }: { item: Plant }) => (
     <TouchableOpacity
       style={styles.plantItem}
       onPress={() => navigation.navigate('PlantDetails', { plant: item })}
@@ -20,7 +20,7 @@ const PlantList = ({ plants, navigation }) => {
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.container}
-      numColumns={2} // Set the number of columns for the grid
+      numColumns={2}
     />
   );
 };

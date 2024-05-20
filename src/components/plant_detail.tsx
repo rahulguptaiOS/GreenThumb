@@ -1,11 +1,12 @@
 import { Text, StyleSheet, ScrollView, View, Image } from 'react-native';
 
-const PlantDetails = ({ route }) => {
+
+const PlantDetails: React.FC<PlantDetailsProps> = ({ route }) => {
   const { plant } = route.params;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-        <Image source={{ uri: plant.image_url }} style={styles.image} />
+      <Image source={{ uri: plant.image_url }} style={styles.image} />
       <View style={styles.card}>
         <Text style={styles.title}>{plant.scientific_name}</Text>
         <View style={styles.detailItem}>
