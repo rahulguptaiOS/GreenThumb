@@ -74,6 +74,22 @@ You've successfully run and modified your React Native App. :partying_face:
 - If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
 - If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
 
+# Demo
+
+## Plant List (Online)
+![Simulator Screenshot - iPhone 15 Pro - 2024-05-21 at 14 46 12](https://github.com/rahulguptaiOS/GreenThumb/assets/21958208/796376ca-4cb1-4bfb-9b05-ad09343ba5ee)
+
+## Plant List (Offline)
+
+![Simulator Screenshot - iPhone 15 Pro - 2024-05-21 at 14 47 45](https://github.com/rahulguptaiOS/GreenThumb/assets/21958208/e34dfa3f-fb7e-4fe4-87e1-bfbeb6554f4a)
+
+
+## Plant Detail 
+![Simulator Screenshot - iPhone 15 Pro - 2024-05-21 at 14 46 46](https://github.com/rahulguptaiOS/GreenThumb/assets/21958208/1d2873eb-db35-4368-bbb7-31264e7c1861)
+
+
+
+
 # Troubleshooting
 
 If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
