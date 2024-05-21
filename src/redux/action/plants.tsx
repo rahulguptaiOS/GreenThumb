@@ -2,6 +2,7 @@
 export const FETCH_PLANTS_REQUEST = 'FETCH_PLANTS_REQUEST';
 export const FETCH_PLANTS_SUCCESS = 'FETCH_PLANTS_SUCCESS';
 export const FETCH_PLANTS_FAILURE = 'FETCH_PLANTS_FAILURE';
+export const SAVE_PLANTS = 'SAVE_PLANTS';
 
 // Define TypeScript types for the actions
 interface FetchPlantsRequestAction {
@@ -18,11 +19,18 @@ interface FetchPlantsFailureAction {
   payload: Error;
 }
 
+export interface SavePlant {
+  type: typeof SAVE_PLANTS;
+  payload: Plant;
+}
+
 // Union type for all possible actions
 export type PlantsActionTypes = 
   | FetchPlantsRequestAction
   | FetchPlantsSuccessAction
   | FetchPlantsFailureAction;
+
+  export type SavePlantsActionTypes = SavePlant;
 
 
 // Action creators
@@ -33,6 +41,11 @@ export const fetchPlantsRequest = (): FetchPlantsRequestAction => ({
 export const fetchPlantsSuccess = (plants: Plant[]): FetchPlantsSuccessAction => ({
   type: FETCH_PLANTS_SUCCESS,
   payload: plants,
+});
+
+export const savePlant = (plant: Plant): SavePlant => ({
+  type: SAVE_PLANTS,
+  payload: plant,
 });
 
 export const fetchPlantsFailure = (error: Error): FetchPlantsFailureAction => ({

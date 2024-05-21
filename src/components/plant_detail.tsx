@@ -1,4 +1,5 @@
 import { Text, StyleSheet, ScrollView, View, Image } from 'react-native';
+import FavoriteButton from './favorite_button';
 
 
 const PlantDetails: React.FC<PlantDetailsProps> = ({ route }) => {

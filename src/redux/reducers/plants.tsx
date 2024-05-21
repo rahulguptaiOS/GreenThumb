@@ -1,4 +1,5 @@
-import { PlantsActionTypes, FETCH_PLANTS_REQUEST, FETCH_PLANTS_SUCCESS, FETCH_PLANTS_FAILURE } from '../action/plants';
+import { storePlant } from '../../async_storage/storage_manager';
+import { PlantsActionTypes, FETCH_PLANTS_REQUEST, FETCH_PLANTS_SUCCESS, FETCH_PLANTS_FAILURE, SAVE_PLANTS } from '../action/plants';
 
 const initialState: PlantsState = {
   plants: [],
@@ -20,3 +21,4 @@ const plantsReducer = (state: PlantsState = initialState, action: PlantsActionTy
 };
 
 export default plantsReducer;
+

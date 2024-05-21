@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, Image, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import FavoriteButton from './favorite_button';
+import { Dispatch } from 'redux';
+import { SavePlant, SavePlantsActionTypes, savePlant } from '../redux/action/plants';
+import { storePlant } from '../async_storage/storage_manager';
 
-const PlantList: React.FC<PlantListProps> = ({ plants, navigation }) => {
+const PlantList: React.FC<PlantListProps> = ({ navigation }) => {
+  const plant = useSelector((state: { plants: PlantsState }) => state.plants.plants);
+  const dispatch = useDispatch<Dispatch<SavePlant>>();
+   // Log plants array
+   const [favorites, setFavorites] = useState<{ [key: number]: boolean }>({});
+
+   const handleFavoritePress = (plant: Plant) => {
+     setFavorites((prevFavorites) => ({
+       ...prevFavorites,
+       [plant.id]: !prevFavorites[plant.id],
+     }));
+     console.log('Storing plant:', plant);
+     dispatch(savePlant(plant));
+   };
+
   const renderItem = ({ item }: { item: Plant }) => (
     <TouchableOpacity
       style={styles.plantItem}
@@ -11,17 +30,26 @@ const PlantList: React.FC<PlantListProps> = ({ plants, navigation }) => {
         <Image source={{ uri: item.image_url }} style={styles.plantImage} />
       </View>
       <Text style={styles.plantName}>{item.common_name}</Text>
+      <View style={styles.favoriteButtonContainer}>
+        <FavoriteButton
+           isFavorite={favorites[item.id] || false}
+           onPress={() => handleFavoritePress(item)}
+        />
+      </View>
     </TouchableOpacity>
   );
 
   return (
-    <FlatList
-      data={plants}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id.toString()}
-      contentContainerStyle={styles.container}
-      numColumns={2}
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={plant}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.container}
+        numColumns={2}
+        ListEmptyComponent={<Text>No plants available.</Text>}
+      />
+    </View>
   );
 };
 
@@ -31,7 +59,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   plantItem: {
-    flex: 1, // Ensure items take up equal space in the grid
+    flex: 1,
     backgroundColor: '#FFF',
     borderRadius: 8,
     padding: 12,
@@ -40,7 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 2, // for Android shadow
+    elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -52,8 +80,8 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 80,
     height: 80,
-    borderRadius: 40, // Make the container circular
-    overflow: 'hidden', // Ensure the image stays within the circular container
+    borderRadius: 40,
+    overflow: 'hidden',
     marginBottom: 12,
   },
   plantImage: {
@@ -66,6 +94,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
+  favoriteButtonContainer: {
+    marginTop: 'auto', // Align the button to the bottom of the item
+  },
 });
+
 
 export default PlantList;

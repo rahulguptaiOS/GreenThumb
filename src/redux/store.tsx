@@ -2,9 +2,18 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import plantsReducer from './reducers/plants'; 
-export type RootState = ReturnType<typeof plantsReducer>;
+import storePlantsReducer from './reducers/store_plant'; 
+export type RootState = ReturnType<typeof rootReducer>;
+
+import { combineReducers } from 'redux';
+
+const rootReducer = combineReducers({
+  plants: plantsReducer,
+  savingReducer: storePlantsReducer,
+});
+
 const store = configureStore({
-  reducer: plantsReducer,
+  reducer: rootReducer,
 });
 
 export type AppDispatch = typeof store.dispatch;

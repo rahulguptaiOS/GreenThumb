@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PlantList from '../components/plant_list';
 import { fetchPlantsRequest, fetchPlantsSuccess, fetchPlantsFailure } from '../redux/action/plants';
 import { fetchPlants } from '../api/plant_api';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
@@ -24,7 +24,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       dispatch(fetchPlantsRequest());
       try {
         const response = await fetchPlants();
-        console.log(response); // Replace with your fetch logic
         dispatch(fetchPlantsSuccess(response));
       } catch (error: any) {
         dispatch(fetchPlantsFailure(error));
@@ -34,10 +33,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     fetchData();
   }, [dispatch]);
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
 
-  return <PlantList plants={plants} navigation={navigation} />;
+  return <View style = {{
+    flex: 1,
+    flexDirection: 'column'
+  }}>
+    {loading ? (
+      <Text>Loading...</Text>
+    ) : error ? (
+      <Text>Error: {error.message}</Text>
+    ) : (
+      <PlantList navigation={navigation} />
+    )}
+  </View>
 };
 
 export default HomeScreen;
