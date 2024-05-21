@@ -13,14 +13,14 @@ export const storePlant = async (plant: Plant) => {
   };
   
   
-  export const retrievePlants = async (): Promise<Plant[] | null> => {
+  export const retrievePlants = async (): Promise<Plant[]> => {
     try {
       const serializedPlants = await AsyncStorage.getItem('plants');
-      if (!serializedPlants) return null;
+      if (!serializedPlants) return [];
       return JSON.parse(serializedPlants) as Plant[]; // Cast to Plant[]
     } catch (error) {
       console.error('Error retrieving plants:', error);
-      return null;
+      return [];
     }
   };
   

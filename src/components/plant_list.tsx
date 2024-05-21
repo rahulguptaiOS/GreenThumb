@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+    height: 200, // Set fixed height
+    width: '45%',
   },
   imageContainer: {
     width: 80,
