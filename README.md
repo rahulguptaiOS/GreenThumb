@@ -4,8 +4,10 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 Step-by-step instructions for installing the project.
 
-Clone the repository: git clone https://github.com/username/project-name.git
+Clone the repository: git clone git@github.com:rahulguptaiOS/GreenThumb.git
+
 Navigate to the project directory: cd GreenTree
+
 Install dependencies: npm install
 
 # Getting Started
