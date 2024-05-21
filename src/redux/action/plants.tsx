@@ -1,3 +1,7 @@
+import { ThunkAction } from "redux-thunk";
+import { fetchPlants } from "../../api/plant_api";
+import { Action } from "redux";
+
 // Define action types
 export const FETCH_PLANTS_REQUEST = 'FETCH_PLANTS_REQUEST';
 export const FETCH_PLANTS_SUCCESS = 'FETCH_PLANTS_SUCCESS';
@@ -52,3 +56,13 @@ export const fetchPlantsFailure = (error: Error): FetchPlantsFailureAction => ({
   type: FETCH_PLANTS_FAILURE,
   payload: error,
 });
+
+export const fetchPlantsThunk = (): ThunkAction<void, PlantsState, unknown, Action<string>> => async dispatch => {
+  dispatch(fetchPlantsRequest());
+  try {
+    const response = await fetchPlants();
+    dispatch(fetchPlantsSuccess(response));
+  } catch (error: any) {
+    dispatch(fetchPlantsFailure(error));
+  }
+};

@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import styles from './styles';
 
 interface FavoriteButtonProps {
   isFavorite: boolean;
@@ -14,18 +15,5 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ isFavorite, onPress }) 
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#f0f0f0',
-    padding: 10,
-    marginTop: 10,
-    height: 40,
-    borderRadius: 8,
-  },
-  text: {
-    color: '#333',
-    fontWeight: 'bold',
-  },
-});
 
 export default FavoriteButton;

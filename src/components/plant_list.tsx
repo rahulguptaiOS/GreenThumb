@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, Image, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, Image, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import FavoriteButton from './favorite_button';
-import { Dispatch } from 'redux';
-import { SavePlant, SavePlantsActionTypes, savePlant } from '../redux/action/plants';
-import { storePlant } from '../async_storage/storage_manager';
+import { Action } from 'redux';
+import { storePlantThunk } from '../redux/action/store_actions';
+import { ThunkDispatch } from 'redux-thunk';
+import NetInfo from '@react-native-community/netinfo';
+import styles from './styles';
 
 const PlantList: React.FC<PlantListProps> = ({ navigation }) => {
   const plant = useSelector((state: { plants: PlantsState }) => state.plants.plants);
-  const dispatch = useDispatch<Dispatch<SavePlant>>();
-   // Log plants array
+  const dispatch = useDispatch<ThunkDispatch<PlantsState, unknown, Action<string>>>();
+
    const [favorites, setFavorites] = useState<{ [key: number]: boolean }>({});
+
+   const [isConnected, setIsConnected] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
    const handleFavoritePress = (plant: Plant) => {
      setFavorites((prevFavorites) => ({
@@ -18,7 +32,7 @@ const PlantList: React.FC<PlantListProps> = ({ navigation }) => {
        [plant.id]: !prevFavorites[plant.id],
      }));
      console.log('Storing plant:', plant);
-     dispatch(savePlant(plant));
+     dispatch(storePlantThunk(plant));
    };
 
   const renderItem = ({ item }: { item: Plant }) => (
@@ -30,12 +44,16 @@ const PlantList: React.FC<PlantListProps> = ({ navigation }) => {
         <Image source={{ uri: item.image_url }} style={styles.plantImage} />
       </View>
       <Text style={styles.plantName}>{item.common_name}</Text>
+      {
+      isConnected ?
       <View style={styles.favoriteButtonContainer}>
         <FavoriteButton
            isFavorite={favorites[item.id] || false}
            onPress={() => handleFavoritePress(item)}
         />
-      </View>
+      </View> : null
+    }
+      
     </TouchableOpacity>
   );
 
@@ -45,7 +63,7 @@ const PlantList: React.FC<PlantListProps> = ({ navigation }) => {
         data={plant}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={styles.listContainer}
         numColumns={2}
         ListEmptyComponent={<Text>No plants available.</Text>}
       />
@@ -53,53 +71,6 @@ const PlantList: React.FC<PlantListProps> = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  plantItem: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    borderRadius: 8,
-    padding: 12,
-    marginHorizontal: 8,
-    marginBottom: 16,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    height: 200, // Set fixed height
-    width: '45%',
-  },
-  imageContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    overflow: 'hidden',
-    marginBottom: 12,
-  },
-  plantImage: {
-    width: '100%',
-    height: '100%',
-  },
-  plantName: {
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  favoriteButtonContainer: {
-    marginTop: 'auto', // Align the button to the bottom of the item
-  },
-});
 
 
 export default PlantList;
